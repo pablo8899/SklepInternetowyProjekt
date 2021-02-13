@@ -1,0 +1,56 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+body {
+    background-color:aliceblue;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300
+}
+
+.card {
+    border: none;
+    border-radius: 10px
+}
+
+.percent {
+    padding: 5px;
+    background-color: red;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    height: 35px;
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer
+}
+
+.wishlist {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #eee;
+    padding: 10px;
+    cursor: pointer
+}
+
+.img-container {
+    position: relative
+}
+
+.img-container .first {
+    position: absolute;
+    width: 100%
+}
+
+.img-container img {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px
+}
+
+.product-detail-container {
+    padding: 10px
+}

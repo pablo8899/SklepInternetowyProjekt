@@ -1,8 +1,21 @@
-﻿@{
+﻿@using SklepInternetowy.DatabaseManager
+@inject DBManager Manager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>Witaj na stronie naszego sklepu ! @(Manager.Name + " " + Manager.LastName)</h2>
+    Zapraszamy do przeglądnięcia naszej oferty<br />
+    Mamy nadzieję, że znajdziesz coś dla siebie jak każdy z milionów użytkowników robiących u nas zakupy !
+
+    @{
+        if(Manager.IsProductTableEmpty)
+        {
+            Manager.AddTestData();
+        }
+    }
+
+    <img src="~/sweeeeeeeeeeeeeeeeeeeeeeeeeeeeeet.png" alt="SŁOOOOOOOOODKI KOCIK" width="40%" height="40%"/>
 </div>

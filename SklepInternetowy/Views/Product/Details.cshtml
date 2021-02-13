@@ -1,0 +1,36 @@
+﻿@using SklepInternetowy.DatabaseManager
+@using SklepInternetowy.Entities
+
+@inject DBManager Manger
+
+@{
+    ProductEntity Product = Manger.GetProductByID(Model);
+}
+
+<link rel="stylesheet" href="~/css/details.css" />
+<div class="container">
+    <div class="card">
+        <div class="container-fliud">
+            <div class="wrapper row">
+                <div class="preview col-md-6">
+
+                    <div class="preview-pic tab-content">
+                        <img height="100%" src="@Product.Image" />
+                    </div>
+
+                </div>
+                <div class="details col-md-6">
+                    <h3 class="product-title">@Product.Name</h3>
+
+                    @*<p class="product-description">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>*@
+                    <h4 class="price">Cena: <span>@Product.TotalPrice.ToString("C2")</span></h4>
+                    <div class="action">
+                        @*<button class="add-to-cart btn btn-default" type="button" OnClick="BuyNow(@Product.Id,1);">Kup teraz</button>*@
+                        <button class="add-to-cart btn btn-default" type="button"  OnClick="AddToCart(@Product.Id,1);">Dodaj do koszyka</button>
+                        @*<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

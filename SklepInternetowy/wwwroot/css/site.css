@@ -1,5 +1,25 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.wishlist:hover {
+    color: red;
+}
+
+ul li a.cart:hover {
+    text-decoration: none;
+    color: #b50b45;
+}
+
+ul li a.cart .cart-basket {
+    font-size: .6rem;
+    position: absolute;
+    top: -6px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    color: #fff;
+    background-color: #41ebd5;
+    border-radius: 50%;
+}
 
 a.navbar-brand {
   white-space: normal;
@@ -69,3 +89,5 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+

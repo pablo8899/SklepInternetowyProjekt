@@ -1,0 +1,125 @@
+﻿@using SklepInternetowy.DatabaseManager
+@inject DBManager Manager
+
+
+@{
+    var shopping = Manager.GetUserShoppingCartItems();
+    var productsCount = Manager.GetUserShoppingCartItems().Sum(x => x.Amount);
+    var ShoppingCart = Manager.GetShoppingCart();
+    var shippingP = ShoppingCart.Shipping == null ? 0 : ShoppingCart.Shipping.Price;
+    var totalPrice = shopping.Sum(x => x.Product.TotalPrice * x.Amount) + shippingP;
+    var totalPriceBefore = totalPrice;
+    double discount = 0;
+    if (ShoppingCart.PromoCode != null)
+    {
+        discount = totalPrice * (ShoppingCart.PromoCode.DiscountPercent * 0.01);
+        totalPrice -= discount;
+    }
+}
+
+<link rel="stylesheet" href="~/css/shoppingCart.css" />
+<div class="card" id="cardShoppingCart">
+    <div class="row">
+        <div class="col-md-7 cart">
+            <div class="title">
+                <div class="row">
+                    <div class="col">
+                        <h4><b>Koszyk</b></h4>
+                    </div>
+                    <div class="col align-self-center text-right text-muted"><span id="product-id">@productsCount</span> produktów</div>
+                </div>
+            </div>
+
+
+            @foreach (var shoppingCartItem in shopping)
+            {
+                var productID = @shoppingCartItem.Product.Id;
+                <div class="row border-top border-bottom" data-id="@productID">
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid" src="@shoppingCartItem.Product.Image"></div>
+                        <div class="col">
+                            <div class="row text-muted">@shoppingCartItem.Product.Category.CategoryPath</div>
+                            <div class="row">@shoppingCartItem.Product.Name</div>
+                        </div>
+                        <div class="col"> <a href="#" OnClick="ChangeAmountOfProduct(@productID, -1);">-</a><a href="#" class="border" data-count="@productID">@shoppingCartItem.Amount</a><a href="#" OnClick="ChangeAmountOfProduct(@productID, 1);">+</a></div>
+                        <div class="col"><span data-price="@productID">@((shoppingCartItem.Product.TotalPrice * shoppingCartItem.Amount).ToString("C2")) </span><a href="#"><span class="close" OnClick="DeleteShoppingCartItem(@productID);">&#10005;</span></a></div>
+                    </div>
+                </div>
+
+            }
+
+
+
+
+
+            <div class="back-to-shop"><a asp-area="" asp-controller="Product" asp-action="Index"><span class="text-muted">Wróć do zakupów</span></a></div>
+        </div>
+        <div class="col-md-5 summary">
+            <div>
+                <h5><b>Podsumowanie</b></h5>
+            </div>
+            <hr>
+
+            @foreach (var shoppingCartItem in shopping)
+            {
+                var productID = @shoppingCartItem.Product.Id;
+                <div class="row" data-summary-id="@productID">
+                    <div class="col" style="padding-left:0;" data-summary-amount="@productID">@shoppingCartItem.Amount</div>
+                    <div class="col text-right" data-summary-price="@productID">@((shoppingCartItem.Product.TotalPrice * shoppingCartItem.Amount).ToString("C2"))</div>
+                </div>
+            }
+            <p>DOSTAWA</p> 
+            <select onchange="ShippingChange();" id="shippingSelect">
+                @if (ShoppingCart.Shipping == null)
+                {
+                    <option class="text-muted" data-shipping-id="-1" selected></option>
+                }
+                else
+                {
+                    <option class="text-muted" data-shipping-id="-1"></option>
+                }
+
+                @foreach (var shipping in Manager.GetShipping())
+                {
+                    if (ShoppingCart.Shipping != null && ShoppingCart.Shipping == shipping)
+                    {
+                        <option class="text-muted" data-shipping-id="@shipping.Id" selected>@shipping.Delivery @shipping.Price.ToString("C2")</option>
+                    }
+                    else
+                    {
+                        <option class="text-muted" data-shipping-id="@shipping.Id">@shipping.Delivery @shipping.Price.ToString("C2")</option>
+                    }
+                }
+            </select>
+            KOD PROMOCYJNY
+                           <div class="row mb-3" style="border-bottom: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                               <input id="code" placeholder="Wpisz swój kod" value="@(ShoppingCart.PromoCode == null ? "" : ShoppingCart.PromoCode.Code)">
+                               <button onclick="PromoCode();">Zatwierdź</button>
+                               <div id="promoCodeButton">
+                                   @if (ShoppingCart.PromoCode != null)
+                                   {
+                                       <button class="ml-2" onclick="ClearCode();">Wyczyść</button>
+                                   }
+                               </div>
+                               </div>
+            <span id="discountSpan">
+                @if (ShoppingCart.PromoCode != null)
+                {
+                    <div class="row">
+                        <div class="col">CENA PRZED ZNIŻKĄ</div>
+                        <div class="col text-right" id="summary-before-discount-price">@((totalPriceBefore).ToString("C2"))</div>
+                    </div>
+                    <div class="row">
+                        <div class="col" id="summary-discount-percent">ZNIŻKA (@ShoppingCart.PromoCode.DiscountPercent%)</div>
+                        <div class="col text-right" id="summary-discount-price">-@((discount).ToString("C2"))</div>
+                    </div>
+                }
+                </span>
+            <div class="row">
+                <div class="col">SUMA</div>
+                <div class="col text-right" id="summary-total-price">@((totalPrice).ToString("C2"))</div>
+            </div>
+            <button class="btn" onclick="Pay(@ShoppingCart.Id);">Zapłać</button>
+        </div>
+    </div>
+</div>
