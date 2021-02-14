@@ -10,7 +10,7 @@ using SklepInternetowy.Authentication;
 namespace SklepInternetowy.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210213211536_Initial")]
+    [Migration("20210214082452_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -112,7 +112,7 @@ namespace SklepInternetowy.DatabaseManager
             Add(new ProductEntity()
             {
                 Name = "Rolex DAY-DATE 40",
-                Amount = 1,
+                Amount = 10,
                 Price = 37000.0,
                 Image = "https://content.rolex.com/dam/2020//upright-bba-with-shadow/m228239-0033.png",
                 Category = zegarki
