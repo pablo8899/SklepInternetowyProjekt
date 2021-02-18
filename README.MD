@@ -12,7 +12,7 @@
 - Szczegó³y produktów
 - U¿ycie ajax'a w celu unikniêcia prze³adowañ strony
 
-# Autor
+# Autorzy
 Imiê | Nazwisko | Numer albumu
 --- | --- | :---: |
 Agnieszka | Przyby³owicz | 12004
