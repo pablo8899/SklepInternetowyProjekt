@@ -11,8 +11,8 @@ namespace SklepInternetowy.Validators
     {
         public AuthLoginValidator()
         {
-            RuleFor(x => x.UserName).NotEmpty();
-            RuleFor(x => x.Password).NotEmpty(); 
+            RuleFor(x => x.UserName).NotEmpty().WithMessage("Pole 'Username' nie może być puste");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Pole 'Password' nie może być puste");
         }
     }
 }

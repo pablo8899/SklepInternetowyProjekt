@@ -1,5 +1,4 @@
-﻿
-$(function () {
+﻿$(function () {
     const API_AUTH_URL = "/api/auth";
     const RegisterError = document.getElementById("signup-errors");
     const LoginError = document.getElementById("signin-errors");
@@ -73,12 +72,38 @@ function getFormData($form) {
     return JSON.stringify(indexed_array);
 }
 
-function HandleError(res,reaload = true)
+function HandleError(res,reload = true)
 {
+    let errMessage = document.querySelector("[class='errorMessage']");
+    errMessage.innerText = "";
+    errMessage.parentElement.style.display = "none";
+    let errorClass = document.querySelectorAll("[class~='error']");
+
+    for (var i = 0; i < errorClass.length; i++) {
+        errorClass[i].innerText = ""
+    }
+
+    if (res.errors) {
+
+        for (const [key, value] of Object.entries(res.errors)) {
+            let input = document.querySelector("[name='" + key.toLowerCase() + "']");
+            let errorDiv = input.parentElement.children[1];
+            let errors = "";
+            for (var i = 0; i < value.length; i++) {
+                errors = value[i]+"<br>";
+            }
+
+            errorDiv.innerHTML = errors;
+        }
+        return;
+    }
+
+
     if (!res.sucess) {
-        alert(res.message);
+        errMessage.innerText = res.message;
+        errMessage.parentElement.style.display = "";
     } else {
-        window.location.reload(reaload);
+        window.location.reload(reload);
     }
 
 }

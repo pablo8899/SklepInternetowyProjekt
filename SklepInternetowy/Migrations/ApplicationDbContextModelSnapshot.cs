@@ -241,6 +241,28 @@ namespace SklepInternetowy.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("SklepInternetowy.Entities.FavoriteProductEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FavoriteProducts");
+                });
+
             modelBuilder.Entity("SklepInternetowy.Entities.ProductEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -253,6 +275,9 @@ namespace SklepInternetowy.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Discount")
                         .HasColumnType("int");
@@ -434,6 +459,17 @@ namespace SklepInternetowy.Migrations
                     b.HasOne("SklepInternetowy.Entities.ShoppingCartEntity", "ShoppingCart")
                         .WithMany()
                         .HasForeignKey("ShoppingCartId");
+                });
+
+            modelBuilder.Entity("SklepInternetowy.Entities.FavoriteProductEntity", b =>
+                {
+                    b.HasOne("SklepInternetowy.Entities.ProductEntity", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("SklepInternetowy.Authentication.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("SklepInternetowy.Entities.ProductEntity", b =>

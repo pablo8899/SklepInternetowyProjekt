@@ -1,27 +1,35 @@
 ﻿
-@using SklepInternetowy.Authentication
-@inject ApplicationDbContext Context
+@using SklepInternetowy.DatabaseManager
+
+@inject DBManager Manager
 
 @{
     ViewData["Title"] = "Home Page";
+    var Products = Manager._dbContext.Products.ToList().Where(x => x.Amount > 0);
 }
 
 
 
 <div class="container-fluid mt-3 mb-3">
     <div class="row g-2">
-        @foreach (var product in Context.Products.Where(x => x.Amount > 0))
+        @foreach (var product in Products)
         {
+            var color = Manager.IsProductFavorite(product) ? "red" : "black";
+            var colorHover = !Manager.IsProductFavorite(product) ? "red" : "black";
+
             <div class="col-md-4 mt-4">
                 <div class="card">
                     <div class="img-container">
                         <div class="justify-content-between align-items-center p-4 first">
                             @if (product.Discount != null)
                             {
-                               <span class="percent float-left">-@product.Discount%</span> 
+                                <span class="percent float-left">-@product.Discount%</span>
                             }
-                                @*<span class="wishlist float-right"><i class="fa fa-heart"></i></span>*@
-                            </div>
+                            @if (Manager.Authenticated)
+                            {
+                                <span class="wishlist float-right" data-fav-id="@product.Id" onclick="AddToFavorite(@product.Id);" style="color:@color;" onmouseout="this.style.color = '@color'" onmouseover="this.style.color = '@colorHover'"><i class="fa fa-heart"></i></span>
+                            }
+                        </div>
                         <a class="nav-link text-dark" asp- asp-controller="Product" asp-route-id="@product.Id" asp-action="Details">
                             <img src="@product.Image" class="img-fluid">
                         </a>

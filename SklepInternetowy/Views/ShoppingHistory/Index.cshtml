@@ -1,7 +1,11 @@
 ﻿@using SklepInternetowy.DatabaseManager
 @inject DBManager Manager
 
-
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
 <div class="container py-5">
     <div class="row">
         <div class="col-lg-8 mx-auto">
@@ -13,8 +17,11 @@
                         <li class="list-group-item">
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                 <div class="media-body order-2 order-lg-1">
-                                    <h5 class="mt-0 font-weight-bold mb-2">@String.Join(", ", Manager.GetUserShoppingCartItems(shoppingHistory.ShoppingCart).Select(x => x.Product.Name))</h5>
-
+                                        @foreach (var item in Manager.GetUserShoppingCartItems(shoppingHistory.ShoppingCart).Select(x => x.Product.Name))
+                                        {
+                                           @item
+                                            <br />
+                                        }
                                 </div><div class="ml-lg-5 order-1 order-lg-2"><i class="fas fa-truck fa-4x"></i></div>
                             </div>
                         </li>

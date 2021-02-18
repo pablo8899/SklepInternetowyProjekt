@@ -21,7 +21,6 @@ namespace SklepInternetowy.Controllers
             return View();
         }
 
-        [Route("Product/{id}")]
         public IActionResult Details(int id)
         {
             return View(id);

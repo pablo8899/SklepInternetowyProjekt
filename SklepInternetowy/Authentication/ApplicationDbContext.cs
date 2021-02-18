@@ -17,6 +17,7 @@ namespace SklepInternetowy.Authentication
         }
 
         public DbSet<ProductEntity> Products { get; set; }
+        public DbSet<FavoriteProductEntity> FavoriteProducts { get; set; }
         public DbSet<CategoriesEntity> Categories { get; set; }
         public DbSet<ShoppingCartItemEntity> ShoppingCartItems { get; set; }
         public DbSet<ShoppingCartEntity> ShoppingCart { get; set; }

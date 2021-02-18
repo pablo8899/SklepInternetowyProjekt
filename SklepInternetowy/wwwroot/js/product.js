@@ -1,6 +1,36 @@
 ﻿const API_PRODUCT_URL = "/api/productapi";
 const API_SHOPPING_CART_URL = "/api/shoppingcartapi";
 
+async function AddToFavorite(id)
+{
+    let data = { "ProductID": id };
+    const response = await fetch(API_PRODUCT_URL + "/addtofavorite",
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+    )
+
+
+    let res = await response.json();
+    if (ErrorHandler(res)) {
+        if (res.sucess) {
+
+            let doc = document.querySelector("[data-fav-id='" + id + "']");
+            let c = doc.style.color === "red" ? "black" : "red";
+            let c2 = doc.style.color === "red" ? "red" : "black";
+            doc.removeAttribute("onmouseout");
+            doc.removeAttribute("onmouseover");
+            doc.style.color = c;
+            doc.setAttribute("onmouseover", "this.style.color = '" + c +"'");
+            doc.setAttribute("onmouseout", "this.style.color = '"+c2+"'");
+        }
+    }
+}
+
 async function PromoCode() {
     let code = $("#code").val();
     let data = { "code": code };
@@ -157,12 +187,19 @@ async function ChangeAmountOfProduct(id, amount)
 
 function ErrorHandler(res)
 {
+    let errMessage = document.querySelector("[class='errorMessage']");
+    errMessage.innerText = "";
+    errMessage.parentElement.style.display = "none";
+
     if (!res.sucess)
     {
-        alert(res.message);
+        errMessage.innerText = res.message;
+        errMessage.parentElement.style.display = "";
         return false;
     }
 
+    errMessage.innerText = "";
+    errMessage.parentElement.style.display = "none";
     return true;
 }
 

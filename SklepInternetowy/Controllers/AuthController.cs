@@ -41,22 +41,32 @@ namespace SklepInternetowy.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AuthLoginModel model)
         {
+            if(userManager.FindByNameAsync(model.UserName).Result == null)
+                return NotFound(new Response() { Sucess = false, Message = "Nie znaleziono takiego użytkownika" });
 
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-            if (result.Succeeded)
-            {
-                return Ok(new Response() { Sucess = true, Message = "Udało się zalogować"});
-            }
-            return LocalRedirect("/");
+            
+            if (!result.Succeeded)
+                return NotFound(new Response() { Sucess = false, Message = "Nie znaleziono takiego użytkownika" });
+            
+            return Ok(new Response() { Sucess = true, Message = "Udało się zalogować"});
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(AuthRegisterModel model)
         {
+
+            if (userManager.FindByNameAsync(model.RegUserName).Result != null)
+                return NotFound(new Response() { Sucess = false, Message = "Użytkownik o tej nazwie już istnieje" });
+
+            if (userManager.FindByEmailAsync(model.Email).Result != null)
+                return NotFound(new Response() { Sucess = false, Message = "Użytkownik o tym emailu już istnieje" });
+
+
             ShoppingCartEntity shoppingCartEntity = new ShoppingCartEntity() { };
             _dBManger.Add(shoppingCartEntity);
-            var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, Name = model.Name, Lastname = model.Lastname, ShoppingCart = shoppingCartEntity };
-            var result = await userManager.CreateAsync(user, model.Password);
+            var user = new ApplicationUser { UserName = model.RegUserName, Email = model.Email, Name = model.Name, Lastname = model.Lastname, ShoppingCart = shoppingCartEntity };
+            var result = await userManager.CreateAsync(user, model.RegPassword);
             if (result.Succeeded)
             {
                 await signInManager.SignInAsync(user, isPersistent: false);

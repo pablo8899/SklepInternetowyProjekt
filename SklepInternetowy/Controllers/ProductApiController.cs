@@ -63,6 +63,29 @@ namespace SklepInternetowy.Controllers
             return null;
         }
 
+        [HttpPost]
+        public IActionResult AddToFavorite(ProductModel model)
+        {
+            if (!_dBManager.Authenticated)
+                return Unauthorized(new Response() { Sucess = false, Message = "By dodać produkt do ulubionych musisz się zalogować" });
+
+            ProductEntity product = _dBManager.GetProductByID(model.ProductID);
+
+            if(_dBManager.IsProductFavorite(product))
+            {
+                var fp = _dBManager.GetUserFavoriteProducts().Where(x => x.Product == product).FirstOrDefault();
+                _dBManager.Delete(fp);
+
+                return Ok(new Response() { Sucess = true, Message = "Usunięto z ulubionych" });
+            } else
+            {
+                var f = new FavoriteProductEntity() { Product = product, User = _dBManager.GetUser() };
+                _dBManager.Add(f);
+
+                return Ok(new Response() { Sucess = true, Message = "Dodano do ulubionych" });
+            }
+        }
+
         [HttpGet]
         public IActionResult GetShoppingCartCount()
         {

@@ -245,7 +245,6 @@ namespace SklepInternetowy.DatabaseManager
             return _dbContext.ShoppingHistories.ToList().Where(x => x.User == GetUser()).ToList();
         }
 
-
         public List<ShoppingCartItemEntity> GetUserShoppingCartItems(ShoppingCartEntity shoppingCart)
         {
             if (!Authenticated)
@@ -254,6 +253,25 @@ namespace SklepInternetowy.DatabaseManager
             var list = _dbContext.ShoppingCartItems.ToList().Where(x => x.ShoppingCart == shoppingCart).ToList();
 
             return list;
+        }
+
+        public List<FavoriteProductEntity> GetUserFavoriteProducts()
+        {
+            if (!Authenticated)
+                return new List<FavoriteProductEntity>();
+
+            var list = _dbContext.FavoriteProducts.ToList().Where(x => x.User == GetUser()).ToList();
+
+            return list;
+        }
+
+        public bool IsProductFavorite(ProductEntity product)
+        {
+
+            if (!Authenticated)
+                return false;
+
+            return GetUserFavoriteProducts().Where(x => x.Product == product).FirstOrDefault() != null;
         }
     }
 }

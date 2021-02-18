@@ -38,10 +38,13 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="#" id="logout">Wyloguj się</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingHistory" asp-action="Index">Moje zakupy</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingHistory" asp-action="Index">Moje zakupy</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Favorite" asp-action="Index">Ulubione</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="#" id="logout">Wyloguj się</a>
                             </li>
                             <li class="nav-item px-2 text-uppercase mt-2 position-relative d-lg-fle">
                                 <a asp-area="" asp-controller="ShoppingCart" asp-action="Index" class="cart position-relative d-inline-flex" aria-label="View your shopping cart">
@@ -57,6 +60,12 @@
             </div>
         </nav>
     </header>
+    <div class="alert" style="display:none;">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <div class="errorMessage">
+
+        </div>
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @if (!User.Identity.IsAuthenticated)

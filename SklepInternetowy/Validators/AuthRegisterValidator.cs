@@ -11,12 +11,12 @@ namespace SklepInternetowy.Validators
     {
         public AuthRegisterValidator()
         {
-            RuleFor(x => x.UserName).NotEmpty();
-            RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Lastname).NotEmpty();
-            RuleFor(x => x.Email).NotEmpty().EmailAddress();
-            RuleFor(x => x.Password).NotEmpty().MinimumLength(5);
-            RuleFor(x => x.PasswordConfirmation).Equal(x => x.Password).WithMessage("Hasła muszą być identczne");
+            RuleFor(x => x.RegUserName).NotEmpty().WithMessage("Pole 'Username' nie może być puste"); ;
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Pole 'Name' nie może być puste"); ;
+            RuleFor(x => x.Lastname).NotEmpty().WithMessage("Pole 'Lastname' nie może być puste"); ;
+            RuleFor(x => x.Email).NotEmpty().EmailAddress().WithMessage("Pole 'Email' nie zawiera poprawnego adresu email");
+            RuleFor(x => x.RegPassword).MinimumLength(5).WithMessage("Pole 'Password' musi zawierać przynajmniej 5 znaków");
+            RuleFor(x => x.PasswordConfirmation).Equal(x => x.RegPassword).WithMessage("Hasła muszą być identczne");
         }
     }
 }

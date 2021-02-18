@@ -54,9 +54,9 @@ namespace SklepInternetowy
                 options.SlidingExpiration = true;
             });
 
-            //services.AddMvc().AddFluentValidation();
-            //services.AddTransient<IValidator<AuthLoginModel>, AuthLoginValidator>();
-            //services.AddTransient<IValidator<AuthRegisterModel>, AuthRegisterValidator>();
+            services.AddMvc().AddFluentValidation();
+            services.AddTransient<IValidator<AuthLoginModel>, AuthLoginValidator>();
+            services.AddTransient<IValidator<AuthRegisterModel>, AuthRegisterValidator>();
             services.AddTransient<DBManager>();
         }
 
