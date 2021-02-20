@@ -17,11 +17,11 @@
                         <li class="list-group-item">
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                                 <div class="media-body order-2 order-lg-1">
-                                        @foreach (var item in Manager.GetUserShoppingCartItems(shoppingHistory.ShoppingCart).Select(x => x.Product.Name))
-                                        {
-                                           @item
-                                            <br />
-                                        }
+                                    @foreach (var item in Manager.GetUserShoppingCartItems(shoppingHistory.ShoppingCart).Select(x => x.Product.Name))
+                                    {
+                                        @item
+                                        <br />
+                                    }
                                 </div><div class="ml-lg-5 order-1 order-lg-2"><i class="fas fa-truck fa-4x"></i></div>
                             </div>
                         </li>

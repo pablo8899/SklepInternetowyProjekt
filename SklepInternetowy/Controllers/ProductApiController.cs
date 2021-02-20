@@ -23,19 +23,19 @@ namespace SklepInternetowy.Controllers
         public IActionResult AddToCart(ProductModel model)
         {
             if (!_dBManager.Authenticated)
-                return Unauthorized(new Response() { Sucess = false, Message = "By dodać produkt do koszyka musisz się zalogować" });
+                return Unauthorized(new Response() { Success = false, Message = "By dodać produkt do koszyka musisz się zalogować" });
 
             ProductEntity product = _dBManager.GetProductByID(model.ProductID);
             if (product == null)
-                return NotFound(new Response() { Sucess = false, Message = "Nie znaleziono takiego produktu" });
+                return NotFound(new Response() { Success = false, Message = "Nie znaleziono takiego produktu" });
 
             if(model.Amount < 0)
-                return StatusCode(406, new Response() { Sucess = false, Message = "Ilość towaru musi być większa od 0" });
+                return StatusCode(406, new Response() { Success = false, Message = "Ilość towaru musi być większa od 0" });
 
             ShoppingCartItemEntity shopCartItem = _dBManager.GetUserShoppingCartItems().Where(x => x.Product == product).FirstOrDefault();
 
             if (product.Amount < (shopCartItem == null ? 0 : shopCartItem.Amount) + model.Amount)
-                return StatusCode(406, new Response() { Sucess = false, Message = "Niewystarczająca ilość towaru" });
+                return StatusCode(406, new Response() { Success = false, Message = "Niewystarczająca ilość towaru" });
 
 
 
@@ -54,7 +54,7 @@ namespace SklepInternetowy.Controllers
                 _dBManager.Update(shopCartItem);
             }
 
-            return Ok(new Response() { Sucess = true, Message = "Poprawnie dodano produkt do koszyka" });
+            return Ok(new Response() { Success = true, Message = "Poprawnie dodano produkt do koszyka" });
         }
 
         [HttpPost]
@@ -67,7 +67,7 @@ namespace SklepInternetowy.Controllers
         public IActionResult AddToFavorite(ProductModel model)
         {
             if (!_dBManager.Authenticated)
-                return Unauthorized(new Response() { Sucess = false, Message = "By dodać produkt do ulubionych musisz się zalogować" });
+                return Unauthorized(new Response() { Success = false, Message = "By dodać produkt do ulubionych musisz się zalogować" });
 
             ProductEntity product = _dBManager.GetProductByID(model.ProductID);
 
@@ -76,13 +76,13 @@ namespace SklepInternetowy.Controllers
                 var fp = _dBManager.GetUserFavoriteProducts().Where(x => x.Product == product).FirstOrDefault();
                 _dBManager.Delete(fp);
 
-                return Ok(new Response() { Sucess = true, Message = "Usunięto z ulubionych" });
+                return Ok(new Response() { Success = true, Message = "Usunięto z ulubionych" });
             } else
             {
                 var f = new FavoriteProductEntity() { Product = product, User = _dBManager.GetUser() };
                 _dBManager.Add(f);
 
-                return Ok(new Response() { Sucess = true, Message = "Dodano do ulubionych" });
+                return Ok(new Response() { Success = true, Message = "Dodano do ulubionych" });
             }
         }
 
@@ -90,9 +90,9 @@ namespace SklepInternetowy.Controllers
         public IActionResult GetShoppingCartCount()
         {
             if(!_dBManager.Authenticated)
-                return Unauthorized(new Response() { Sucess = false, Message = "Nie zalogowano" });
+                return Unauthorized(new Response() { Success = false, Message = "Nie zalogowano" });
 
-            return Ok(new Response() { Sucess = true, Message = _dBManager.GetUserShoppingCartItems().Sum(x => x.Amount).ToString() });
+            return Ok(new Response() { Success = true, Message = _dBManager.GetUserShoppingCartItems().Sum(x => x.Amount).ToString() });
         }
     }
 }

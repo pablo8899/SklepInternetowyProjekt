@@ -99,7 +99,7 @@ function HandleError(res,reload = true)
     }
 
 
-    if (!res.sucess) {
+    if (!res.success) {
         errMessage.innerText = res.message;
         errMessage.parentElement.style.display = "";
     } else {

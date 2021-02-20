@@ -17,7 +17,7 @@ async function AddToFavorite(id)
 
     let res = await response.json();
     if (ErrorHandler(res)) {
-        if (res.sucess) {
+        if (res.success) {
 
             let doc = document.querySelector("[data-fav-id='" + id + "']");
             let c = doc.style.color === "red" ? "black" : "red";
@@ -46,7 +46,7 @@ async function PromoCode() {
 
     let res = await response.json();
     if (ErrorHandler(res)) {
-        if (res.sucess) {
+        if (res.success) {
 
             let resJson = JSON.parse(res.message);
 
@@ -88,7 +88,7 @@ async function ClearCode() {
 
     let res = await response.json();
     if (ErrorHandler(res)) {
-        if (res.sucess) {
+        if (res.success) {
 
             let resJson = JSON.parse(res.message);
 
@@ -122,7 +122,7 @@ async function AddToCart(id, amount) {
     if (ErrorHandler(await response.json())) {
         const response2 = await fetch(API_PRODUCT_URL + "/getshoppingcartcount");
         let res = await response2.json();
-        if (res.sucess)
+        if (res.success)
             $("#basket").text(res.message);
     }
 
@@ -155,7 +155,7 @@ async function DeleteShoppingCartItem(id) {
 
     let res = await response.json();
     if (ErrorHandler(res)) {
-        if (res.sucess)
+        if (res.success)
         {
             let resJson = JSON.parse(res.message);
             ChangeShoppingCart(resJson, id);
@@ -177,7 +177,7 @@ async function ChangeAmountOfProduct(id, amount)
 
     let res = await response.json();
     if (ErrorHandler(res)) {
-        if (res.sucess)
+        if (res.success)
         {
             let resJson = JSON.parse(res.message);
             ChangeShoppingCart(resJson, id);
@@ -191,7 +191,7 @@ function ErrorHandler(res)
     errMessage.innerText = "";
     errMessage.parentElement.style.display = "none";
 
-    if (!res.sucess)
+    if (!res.success)
     {
         errMessage.innerText = res.message;
         errMessage.parentElement.style.display = "";
@@ -240,7 +240,7 @@ async function ChangeShoppingCart(resJson, id) {
 
     const response2 = await fetch(API_PRODUCT_URL + "/getshoppingcartcount");
     let res2 = await response2.json();
-    if (res2.sucess) {
+    if (res2.success) {
         $("#basket").text(res2.message);
         $("#product-id").text(res2.message);
     }
@@ -258,7 +258,7 @@ async function Pay(id)
 
     let res = await response.json();
     if (ErrorHandler(res)) {
-        if (res.sucess) {
+        if (res.success) {
 
             alert(res.message)
             window.location.href = "/ShoppingHistory/" + id;
@@ -282,7 +282,7 @@ $(function () {
 
         let res = await response.json();
         if (ErrorHandler(res)) {
-            if (res.sucess) {
+            if (res.success) {
 
                 let resJson = JSON.parse(res.message);
 

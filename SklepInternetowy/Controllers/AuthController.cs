@@ -42,14 +42,14 @@ namespace SklepInternetowy.Controllers
         public async Task<IActionResult> Login(AuthLoginModel model)
         {
             if(userManager.FindByNameAsync(model.UserName).Result == null)
-                return NotFound(new Response() { Sucess = false, Message = "Nie znaleziono takiego użytkownika" });
+                return NotFound(new Response() { Success = false, Message = "Nie znaleziono takiego użytkownika" });
 
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
             
             if (!result.Succeeded)
-                return NotFound(new Response() { Sucess = false, Message = "Nie znaleziono takiego użytkownika" });
+                return NotFound(new Response() { Success = false, Message = "Nie znaleziono takiego użytkownika" });
             
-            return Ok(new Response() { Sucess = true, Message = "Udało się zalogować"});
+            return Ok(new Response() { Success = true, Message = "Udało się zalogować"});
         }
 
         [HttpPost]
@@ -57,10 +57,10 @@ namespace SklepInternetowy.Controllers
         {
 
             if (userManager.FindByNameAsync(model.RegUserName).Result != null)
-                return NotFound(new Response() { Sucess = false, Message = "Użytkownik o tej nazwie już istnieje" });
+                return NotFound(new Response() { Success = false, Message = "Użytkownik o tej nazwie już istnieje" });
 
             if (userManager.FindByEmailAsync(model.Email).Result != null)
-                return NotFound(new Response() { Sucess = false, Message = "Użytkownik o tym emailu już istnieje" });
+                return NotFound(new Response() { Success = false, Message = "Użytkownik o tym emailu już istnieje" });
 
 
             ShoppingCartEntity shoppingCartEntity = new ShoppingCartEntity() { };
@@ -70,20 +70,20 @@ namespace SklepInternetowy.Controllers
             if (result.Succeeded)
             {
                 await signInManager.SignInAsync(user, isPersistent: false);
-                return Ok(new Response() { Sucess = true, Message = "Udało się zarejestrować"});
+                return Ok(new Response() { Success = true, Message = "Udało się zarejestrować"});
             }
 
-            return Unauthorized();
+            return Unauthorized(new Response() { Success = false, Message = "Wystąpił błąd skontaktuj się z administratorem" });
         }
 
         public async Task<IActionResult> Logout()
         {
             if (!User.Identity.IsAuthenticated)
-                return Unauthorized(new Response() { Sucess = false, Message = "Funkcja dostępna tylko dla zalogowanych użytkowników" });
+                return Unauthorized(new Response() { Success = false, Message = "Funkcja dostępna tylko dla zalogowanych użytkowników" });
 
             await signInManager.SignOutAsync();
 
-            return Ok(new Response() { Sucess = true, Message = "Udało się wylogować"});
+            return Ok(new Response() { Success = true, Message = "Udało się wylogować"});
         }
     }
 }
